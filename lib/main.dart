@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'delete_func.dart';
 
 void main() {
   runApp(ContactApp());
@@ -50,31 +51,31 @@ class _ContactListScreenState extends State<ContactListScreen> {
     }
   }
 
-  void _confirmDelete(int index) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-        title: Text("Confirmation"),
-        content: Text("Are you sure for Delete?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Icon(Icons.close, color: Colors.blue),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _contacts.removeAt(index);
-              });
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.delete, color: Colors.blue),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _confirmDelete(int index) {
+  //   showDialog(
+  //     context: context,
+  //     builder:
+  //         (context) => AlertDialog(
+  //       title: Text("Confirmation"),
+  //       content: Text("Are you sure for Delete?"),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: Icon(Icons.close, color: Colors.blue),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             setState(() {
+  //               _contacts.removeAt(index);
+  //             });
+  //             Navigator.pop(context);
+  //           },
+  //           child: Icon(Icons.delete, color: Colors.blue),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +129,18 @@ class _ContactListScreenState extends State<ContactListScreen> {
                 itemBuilder: (context, index) {
                   final contact = _contacts[index];
                   return GestureDetector(
-                    onLongPress: () => _confirmDelete(index),
-                    child: Card(
+                    onLongPress: () {
+                    showConfirmDeleteDialog(
+                      context: context,
+                      onDelete: () {
+                        setState(() {
+                          _contacts.removeAt(index);
+                        });
+                      },
+                    );
+                  },
+
+                  child: Card(
                       color: Colors.grey[300],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3),
